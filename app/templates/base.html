@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}eXchange{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'images/Logo.jpg' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-k6RqeWeci5ZR/Lv4MR0sA0FfDOM9Md9G7M/Z1X4O0uBih2T8D3z9U1dA6/iRYb1B6Guv4e0w0IpZQQQFZoO4g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-k6RqeWeci5ZR/Lv4MR0sA0FfDOM9Md9G7M/Z1X4O0uBih2T8D3z9U1dA6/iRYb1B6Guv4e0w0IpZQQQFZoO4g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body
+    class="{% if request.COOKIES.dark_mode == 'true' %}dark-mode{% else %}light-mode{% endif %}"
+  >
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-lg" id="top">
+      <div class="container">
+        <div class="navbar-brand logo">
+          <a href="{% url 'index' %}" style="text-decoration: none"
+            >e<b>X</b>change</a
+          >
+        </div>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span
+            class="navbar-toggler-icon"
+            style="background-color: #007bff !important; border-radius: 50%"
+          ></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'buy' %}">Buy</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'sell' %}">Sell</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'saved_items' %}">Saved Items</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'account' %}">My Account</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showLogoutModal()"
+                >Logout</a
+              >
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+            {% endif %}
+          </ul>
+          <div class="toggle-switch" onclick="toggleMode()">
+            <span class="icon sun">🌤️</span>
+            <span class="icon moon">🌙</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main>{% block content %}{% endblock %}</main>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" onclick="scrollToTop()">
+      ⬆️
+    </button>
+
+    <!-- Logout Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      aria-labelledby="logoutModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logoutModalLabel">
+              Logout Confirmation
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">Are you sure you want to logout?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="document.getElementById('logout-form').submit();"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Form -->
+    <form
+      id="logout-form"
+      action="{% url 'logout' %}"
+      method="POST"
+      style="display: none"
+    >
+      {% csrf_token %}
+    </form>
+
+    <!-- Footer -->
+<footer class="text-center text-lg-start mt-4 pt-4" style="background-color: #f8f9fa;">
+  <div class="container p-4">
+    <div class="row">
+      <div class="col-lg-4 col-md-12 mb-4">
+        <h5 class="font-weight-bold">Name</h5>
+        <p class="text-muted">Charan Teja B S</p>
+      </div>
+      <div class="col-lg-4 col-md-12 mb-4">
+        <h5 class="font-weight-bold">Email</h5>
+        <p class="text-muted">cherrypy6@gmail.com</p>
+      </div>
+      <div class="col-lg-4 col-md-12 mb-4">
+        <h5 class="font-weight-bold">Social Links</h5>
+        <a href="https://github.com/CharanTejaBS-cherrypy" class="btn btn-link text-dark">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/charan-teja-6b1a4026a" class="btn btn-link text-dark">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="text-center p-3" style="background-color: #e9ecef;">
+    <small>© 2024 eXchange. All Rights Reserved.</small>
+  </div>
+</footer>
+
+
+    <script src="{% static 'js/toggle.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.11/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      // Show/hide the Back to Top button on scroll
+      window.onscroll = function () {
+        const button = document.getElementById("back-to-top");
+        if (
+          document.body.scrollTop > 200 ||
+          document.documentElement.scrollTop > 200
+        ) {
+          button.style.display = "flex"; // Show the button
+        } else {
+          button.style.display = "none"; // Hide the button
+        }
+      };
+
+      // Scroll to top function
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+      }
+
+      // Show logout modal
+      function showLogoutModal() {
+        $("#logoutModal").modal("show");
+      }
+    </script>
+  </body>
+</html>

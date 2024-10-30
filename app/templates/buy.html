@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+  /* Product List Styles */
+  .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Space between cards */
+    padding: 20px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+  }
+
+  .product {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 240px; /* Fixed width */
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow */
+    background: #ffffff; /* Default background for light mode */
+  }
+
+  .dark-mode .product {
+    background: #2a2a2a; /* Dark background for products in dark mode */
+    color: #e5e5e5; /* Text color for dark mode */
+  }
+
+  /* Hover effect for product cards */
+  .product:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+
+  .product img {
+    width: 100%;
+    height: 180px; /* Fixed height for images */
+    object-fit: cover;
+  }
+
+  .product h3 {
+    font-size: 1.2em;
+    margin: 10px 0;
+  }
+
+  .product p {
+    margin: 5px 0;
+    font-size: 0.9em;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+    margin: 10px 10px;
+  }
+
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white; /* White text for buttons */
+    background-color: #007bff; /* Primary button color */
+    font-weight: bold; /* Bold text for emphasis */
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  }
+
+  button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Subtle lift on hover */
+  }
+
+  .request-button {
+    background-color: #28a745; /* Green for request button */
+  }
+
+  .request-button:hover {
+    background-color: #218838; /* Darker green on hover */
+  }
+
+  /* No products message */
+  .no-items-message {
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 50px;
+    color: #dc3545; /* Bootstrap danger color */
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .product {
+      width: 90%; /* Full width on small screens */
+    }
+  }
+</style>
+
+<div class="product-list">
+  {% if products|length == 0 %}
+  <div class="no-items-message">No Products to Buy</div>
+  {% else %} 
+  {% for product in products %}
+  <div class="product {% if request.COOKIES.light_mode == 'false' %}dark-mode{% endif %}">
+    {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+    {% else %}
+    <img src="{% static 'images/default.png' %}" alt="No image available" />
+    {% endif %}
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.description }}</p>
+    <p>Price: ${{ product.price }}</p>
+    <p>Category: {{ product.category }}</p>
+
+    <div class="buttons-container">
+      <button class="icon-button {% if product.id in saved_products %}saved{% endif %}">
+        <a
+          href="{% url 'toggle_save_product' product.id %}"
+          style="
+            color: inherit;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <i
+            class="fas {% if product.id in saved_products %}fa-heart{% else %}fa-heart-o{% endif %}"
+            style="margin-right: 5px"
+          ></i>
+          {% if product.id in saved_products %} Unsave {% else %} Save {% endif %}
+        </a>
+      </button>
+
+      <button
+        onclick="shareProduct('{{ request.build_absolute_uri }}{{ product.id }}/', '{{ product.name }}')"
+      >
+        Share
+      </button>
+
+      <button class="request-button" onclick="requestToBuy('{{ product.contact }}', '{{ product.name }}')">Request To Buy</button>
+    </div>
+  </div>
+  {% endfor %} 
+  {% endif %}
+</div>
+
+<script>
+  function shareProduct(url, productName) {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: productName,
+          url: url,
+        })
+        .then(() => console.log("Share successful"))
+        .catch((error) => console.log("Error sharing:", error));
+    } else {
+      alert("Your browser does not support the Web Share API.");
+    }
+  }
+
+  function requestToBuy(contact, productName) {
+    const username = "{{ request.user.username }}"; // Get logged in username
+    const requestMessage = `${username} wants to buy the product: ${productName}`; // Custom message
+
+    // Check if contact is a phone number
+    if (contact.startsWith('+91')) { // Assuming the contact number is in Indian format
+      // Use tel link format for SMS or Call
+      window.location.href = `tel:${contact}`; // This will open the dialer to call
+      //alert(requestMessage);  Alert the user with the message
+    } else if (contact.includes('@')) { // Check if the contact is an email
+      // Open the mail client with predefined subject and body
+      window.location.href = `mailto:${contact}?subject=Request to Buy ${productName}&body=${requestMessage}`;
+    } else {
+      alert('Invalid contact information.');
+    }
+  }
+</script>
+
+{% endblock %}

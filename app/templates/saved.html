@@ -1,0 +1,208 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block content %}
+<!-- Include SweetAlert2 CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+  /* Saved Products Styles */
+  .page-title {
+    text-align: center;
+    margin: 40px 0px;
+    color: inherit; /* Inherit color for dark/light mode compatibility */
+    font-size: 2rem; /* Larger title */
+  }
+
+  /* Product List */
+  .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center products */
+    gap: 20px; /* Space between cards */
+  }
+
+  /* Product Card */
+  .product-card {
+    background: #ffffff; /* Light background for product card */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: hidden; /* Hide overflow */
+    width: 180px; /* Slightly smaller width for cards */
+    transition: transform 0.2s, background 0.4s; /* Animation on hover */
+    margin-bottom: 20px;
+    display: flex; /* Flexbox for vertical alignment */
+    flex-direction: column; /* Align items vertically */
+  }
+
+  .product-card:hover {
+    transform: scale(1.05); /* Slightly scale up on hover */
+  }
+
+  /* Dark Mode Compatibility */
+  .dark-mode .product-card {
+    background: #2a2a2a; /* Dark background for product card */
+    border: 1px solid #444; /* Dark border */
+  }
+
+  /* Product Image */
+  .product-image {
+    width: 100%;
+    height: auto;
+    display: block; /* Block level to remove spacing issues */
+  }
+
+  /* Product Info */
+  .product-info {
+    padding: 15px; /* Space inside card */
+    flex-grow: 1; /* Take up remaining space */
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    justify-content: space-between; /* Space between items */
+  }
+
+  .product-name {
+    font-size: 1.5rem; /* Larger product name */
+    margin: 0; /* Remove default margin */
+    color: inherit; /* Inherit text color */
+  }
+
+  .product-description {
+    color: #555; /* Lighter text for description */
+    margin: 5px 0; /* Spacing for better readability */
+  }
+
+  /* Dark Mode Compatibility for Text */
+  .dark-mode .product-description {
+    color: #e5e5e5; /* Light text color in dark mode */
+  }
+
+  .product-price,
+  .product-category {
+    font-weight: bold; /* Make prices and categories bold */
+    margin: 5px 0; /* Space out the text */
+    color: inherit; /* Inherit text color */
+  }
+
+  /* Remove Button */
+  .remove-button {
+    background-color: #dc3545; /* Bootstrap Danger color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s; /* Transition for background color */
+    width: 100%; /* Full width button */
+    margin-top: auto; /* Push button to the bottom of the card */
+    margin-bottom: 10px; /* Fixed margin from bottom */
+  }
+
+  .remove-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+  }
+
+  /* No Products Message */
+  .no-products-message {
+    text-align: center;
+    font-size: 1.5rem; /* Slightly larger text */
+    color: #999; /* Grey color for the message */
+    margin: 40px 0; /* Margin to space it out */
+  }
+
+  /* Dark Mode Compatibility for No Products Message */
+  .dark-mode .no-products-message {
+    color: #dc3545; /* Red color in dark mode */
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .product-card {
+      width: 90%; /* Responsive card width on small screens */
+    }
+  }
+</style>
+
+<h2 class="page-title">Saved Products</h2>
+
+{% if saved_products %}
+<div class="product-list">
+  {% for product in saved_products %}
+  <div class="product-card">
+    {% if product.image %}
+    <img
+      src="{{ product.image.url }}"
+      alt="{{ product.name }}"
+      class="product-image"
+    />
+    {% else %}
+    <img
+      src="{% static 'images/default.png' %}"
+      alt="No image available"
+      class="product-image"
+    />
+    {% endif %}
+    <div class="product-info">
+      <h3 class="product-name">{{ product.name }}</h3>
+      <p class="product-description">{{ product.description }}</p>
+      <p class="product-price">Price: ${{ product.price }}</p>
+      <p class="product-category">Category: {{ product.category }}</p>
+      <button class="remove-button" onclick="removeProduct({{ product.id }})">
+        Remove
+      </button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="no-products-message">No saved products found.</p>
+{% endif %}
+
+<!-- JavaScript for Remove Functionality -->
+<script>
+  function removeProduct(productId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!',
+      cancelButtonText: 'No, cancel!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "{% url 'toggle_save_product' 0 %}".replace("0", productId);
+
+        const csrfToken = document.querySelector(
+          'input[name="csrfmiddlewaretoken"]'
+        ).value;
+        const csrfInput = document.createElement("input");
+        csrfInput.type = "hidden";
+        csrfInput.name = "csrfmiddlewaretoken";
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+
+        document.body.appendChild(form);
+        form.submit(); // Submit the form to remove the product
+
+        Swal.fire(
+          'Removed!',
+          'Your product has been removed.',
+          'success'
+        );
+      } else {
+        Swal.fire(
+          'Cancelled',
+          'Your product is safe :)',
+          'info'
+        );
+      }
+    });
+  }
+</script>
+
+{% endblock %}

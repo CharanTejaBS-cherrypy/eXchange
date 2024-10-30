@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Home - eXchange{% endblock %}
+{% block content %}
+
+<style>
+  /* Icons Container */
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  .icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    background-color: var(--icon-bg-color);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 180px;
+    height: 200px;
+    animation: pulse 5s ease-in-out infinite;
+  }
+
+  .icon-item svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+    transition: fill 0.3s;
+  }
+
+  .icon-item p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 0;
+    margin-top: 20px;
+  }
+
+  .icon-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .icon-item:hover svg {
+    fill: #0056b3;
+  }
+
+  /* Dark Mode Styles */
+  :root.light-mode {
+    --icon-bg-color: #f8f9fa;
+    --text-color: #333;
+  }
+
+  :root.dark-mode {
+    --icon-bg-color: #333;
+    --text-color: #e5e5e5;
+  }
+
+  /* Heading Styles */
+  .hero h1 {
+    text-align: center;
+    margin: 0px 40px;
+    margin-top: 40px;
+    font-size: 4rem;
+    color: #ffffff;
+    background: #0056b3;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: colorShift 8s linear infinite;
+  }
+
+  .hero h1 b {
+    font-size: 6rem;
+    color: #ffd700;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  /* Animations */
+  @keyframes colorShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes glow {
+    0% { text-shadow: 0 0 2px #ffa200, 0 0 4px #ff9900; }
+    100% { text-shadow: 0 0 6px #ff8c00, 0 0 8px #fffb00; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* Responsive Layout */
+  @media (max-width: 768px) {
+    .icon-container {
+      flex-direction: column;
+    }
+
+    .icon-item {
+      width: 90%;
+      height: auto;
+    }
+  }
+</style>
+
+<section class="hero">
+  <h1 class="animated-heading">
+    <b>X</b>clusively for <i><em style="color:crimson;font-style:normal;font-size:4rem;font-weight:bolder">UVCE</em></i>
+  </h1>
+
+  <!-- Icons Section -->
+  <div class="icon-container">
+    <div class="icon-item">
+      <!-- Sell Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#007bff">
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-2-9h4V9h-4v2zm0 2h4v2h-4v-2z"/>
+      </svg>
+      <p>Sell Your Product</p>
+    </div>
+    <div class="icon-item">
+      <!-- Share Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#007bff">
+        <path d="M18 16.08c-.76 0-1.44.3-1.96.77l-7.13-4.15c.05-.24.09-.49.09-.75s-.03-.51-.09-.75l7.11-4.13c.54.5 1.25.81 2.02.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .25.03.5.08.73l-7.15 4.15c-.54-.5-1.25-.78-2.03-.78-1.66 0-3 1.34-3 3s1.34 3 3 3c.8 0 1.53-.3 2.06-.8l7.1 4.14c-.05.22-.08.46-.08.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/>
+      </svg>
+      <p>Share It</p>
+    </div>
+    <div class="icon-item">
+      <!-- Community Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#007bff">
+        <path d="M12 3C9.79 3 8 4.79 8 7s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm6.31 9.42C16.8 13.36 14.5 12 12 12s-4.8 1.36-6.31 3.42C4.69 16.79 4 18.37 4 20h2c0-1.25.54-2.48 1.46-3.4C8.39 15.68 10.13 15 12 15s3.61.68 4.54 1.6c.92.92 1.46 2.15 1.46 3.4h2c0-1.63-.69-3.21-1.69-4.58z"/>
+      </svg>
+      <p>Let’s Grow Our Community</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

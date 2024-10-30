@@ -1,0 +1,248 @@
+/* Global Styles */
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Dark and Light Mode Styling */
+.light-mode {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.dark-mode {
+  background-color: #1e1e1e;
+  color: #e5e5e5;
+}
+
+/* Navbar Styling */
+.navbar {
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  position: fixed; /* Fixed navbar */
+  top: 0; /* Stick to top */
+  width: 100%; /* Full width */
+  z-index: 1000; /* Ensure it stays on top of other content */
+}
+
+.dark-mode .navbar {
+  background-color: #2a2a2a; /* Dark background for navbar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+}
+
+.navbar-brand {
+  font-size: 2.5rem !important;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none !important; /* Remove underline */
+  transition: color 0.3s ease;
+  margin-left: -40px;
+}
+
+.navbar-brand:hover {
+  color: #005ec2 !important; /* Darker blue on hover */
+  text-decoration: none !important; /* Ensure no underline on hover */
+  transform: scale(1.01);
+  transition: ease-in-out 0.4s;
+}
+
+b {
+  color: #f1c40f;
+  text-shadow: #0026ff 1px 1px 2px;
+}
+
+/* Navbar Links Styling */
+.navbar-nav .nav-link {
+  color: #333; /* Light mode link color */
+  margin: 0 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0; /* Padding for better touch target */
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.dark-mode .navbar-nav .nav-link {
+  color: #e5e5e5; /* Dark mode link color */
+}
+
+.navbar-nav .nav-link:hover {
+  color: #007bff; /* Highlight color on hover */
+  transform: scale(1.03); /* Subtle zoom on hover */
+}
+
+/* Toggle Switch with Sun and Moon Icons */
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-switch .icon {
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+  margin-left: 5px; /* Space between icons */
+}
+
+.toggle-switch .icon.sun {
+  color: #f1c40f; /* Sun color */
+}
+
+.toggle-switch .icon.moon {
+  color: #007bff; /* Moon color */
+  display: none; /* Initially hide moon icon */
+}
+
+/* Navbar Toggler Styles */
+.navbar-toggler {
+  border: #007bff 1px double; /* Remove border */
+  background-color: transparent; /* Transparent background */
+}
+
+.navbar-toggler:focus {
+  outline: none; /* Remove focus outline */
+}
+
+/* Navbar Toggler Icon */
+.navbar-toggler-icon {
+  background-color: #007bff; /* Color for toggler icon */
+  color: #f1c40f !important;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.5rem;
+  }
+
+  .navbar-nav {
+    text-align: center;
+    margin-top: 1rem;
+    flex-direction: column;
+    width: 100%; /* Full width for navbar items */
+  }
+
+  .nav-link {
+    margin: 0.5rem 0;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    margin-left: 10px !important;
+  }
+
+  /* Center toggle switch in the navbar */
+  .toggle-switch {
+    display: flex; /* Use flexbox to center items */
+    justify-content: center; /* Center horizontally */
+    margin: 1rem auto; /* Center the toggle switch vertically */
+    width: 100%; /* Full width */
+  }
+
+  .navbar-toggler-icon {
+    background-color: #f1c40f; /* Change toggler icon color */
+  }
+}
+
+/* Back to Top Button Styling */
+.back-to-top {
+  position: fixed; /* Fixed position */
+  bottom: 20px; /* Distance from the bottom */
+  right: 20px; /* Distance from the right */
+  background-color: #007bff; /* Button background color */
+  color: white; /* Text color */
+  border: none; /* Remove border */
+  border-radius: 50%; /* Round shape */
+  width: 60px; /* Width of the button */
+  height: 60px; /* Height of the button */
+  font-size: 24px; /* Icon size */
+  display: flex; /* Flexbox for centering */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
+  z-index: 1000; /* Ensure it stays on top */
+}
+
+/* Hover effect */
+.back-to-top:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Accessibility - hide the button initially */
+.back-to-top {
+  display: none; /* Hide button by default */
+}
+
+/* Show button when scrolled down */
+body.scrolled .back-to-top {
+  display: flex; /* Show the button */
+}
+
+/* Footer Styling */
+footer {
+  background-color: #e9f4ff !important; /* Default light gray background */
+  color: #343a40; /* Default dark gray text color */
+}
+
+footer h5 {
+  font-weight: bold; /* Bold font for headings */
+  color: #343a40; /* Dark gray text color for headings */
+}
+
+footer p {
+  color: #6c757d; /* Muted text color */
+}
+
+footer .btn-link {
+  color: #007bff; /* Bootstrap primary color for links */
+}
+
+footer .btn-link:hover {
+  color: #61a0ff !important; /* Darker shade on hover */
+  text-decoration: none; /* Underline on hover */
+}
+
+footer .text-center {
+  font-size: 14px; /* Smaller font size for the copyright notice */
+  color: #6c757d; /* Muted text color */
+}
+
+footer .social-links {
+  margin-top: 10px; /* Add space above social links */
+}
+
+/* Dark Mode Footer Styling */
+.dark-mode footer {
+  background-color: #2a2a2a !important; /* Dark background for footer */
+  color: #0069b9; /* Light text color */
+}
+
+.dark-mode footer h5 {
+  color: #ffd932; /* Light text color for headings */
+}
+
+.dark-mode footer p,
+.dark-mode footer .text-center {
+  color: #b0b0b0; /* Muted light color for dark mode */
+}
+
+.dark-mode footer .text-center {
+  background-color: #1f252b !important;
+}
+
+.dark-mode footer .btn-link {
+  color: #00eeff !important; /* Light blue color for links */
+}
+
+.dark-mode footer .btn-link:hover {
+  color: #009783 !important; /* Different hover color for dark mode */
+  text-decoration: none;
+}

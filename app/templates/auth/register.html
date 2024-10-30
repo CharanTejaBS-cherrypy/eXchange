@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  /* Register Form Styling */
+  .register-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--form-bg-color);
+    transition: background-color 0.4s ease, box-shadow 0.3s ease;
+  }
+
+  .register-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: var(--text-color);
+  }
+
+  .register-form label {
+    font-weight: bold;
+    color: var(--text-color);
+  }
+
+  .register-form input[type="text"],
+  .register-form input[type="password"],
+  .register-form input[type="email"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .register-form input[type="text"]:focus,
+  .register-form input[type="password"]:focus,
+  .register-form input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: var(--input-bg-color);
+  }
+
+  .register-button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .register-button:hover {
+    background-color: #005ec2;
+  }
+
+  /* Dark and Light Mode Variable Colors */
+  :root.light-mode {
+    --form-bg-color: #ffffff;
+    --input-bg-color: #f5f5f5;
+    --text-color: #333;
+  }
+
+  :root.dark-mode {
+    --form-bg-color: #2a2a2a;
+    --input-bg-color: #3b3b3b;
+    --text-color: #e5e5e5;
+  }
+</style>
+<div class="register-container">
+  <h2 class="register-header">Register</h2>
+  <form method="post" action="{% url 'register' %}" class="register-form">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="register-button">Register</button>
+  </form>
+</div>
+{% endblock %}

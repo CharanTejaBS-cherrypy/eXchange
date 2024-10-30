@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  /* Login Form Styling */
+  .login-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--form-bg-color);
+    transition: background-color 0.4s ease, box-shadow 0.3s ease;
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: var(--text-color);
+  }
+
+  .login-form label {
+    font-weight: bold;
+    color: var(--text-color);
+  }
+
+  .login-form input[type="text"],
+  .login-form input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .login-form input[type="text"]:focus,
+  .login-form input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: var(--input-bg-color);
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .login-button:hover {
+    background-color: #005ec2;
+  }
+
+  /* Dark and Light Mode Variable Colors */
+  :root.light-mode {
+    --form-bg-color: #ffffff;
+    --input-bg-color: #f5f5f5;
+    --text-color: #333;
+  }
+
+  :root.dark-mode {
+    --form-bg-color: #2a2a2a;
+    --input-bg-color: #3b3b3b;
+    --text-color: #e5e5e5;
+  }
+</style>
+<div class="login-container">
+  <h2 class="login-header">Login</h2>
+  <form method="post" action="{% url 'login' %}" class="login-form">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="login-button">Login</button>
+    <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+  </form>
+</div>
+{% endblock %}
